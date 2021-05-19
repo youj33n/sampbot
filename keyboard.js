@@ -10,7 +10,24 @@ export const COLOR_BTN = { //Цвета кнопок
 
 export const generalMenu = Keyboard.builder() //кнопка 'Меню'
 export const menu = Keyboard.builder()//Меню с аторизацией/промо
-    
+export const menu2 = Keyboard.builder()//Меню с аторизацией/промо
+
+
+menu2.oneTime()
+    .textButton({
+        label: `Выход с аккаунта`,
+        color: COLOR_BTN.green
+    })
+    .textButton({
+        label: `Статистика`,
+        color: COLOR_BTN.blue
+    })
+    .row()
+    .textButton({
+        label: `Назад`,
+        color: COLOR_BTN.red
+    })
+    .row()
 
 menu.oneTime()
     .textButton({
