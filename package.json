@@ -1,0 +1,19 @@
+{
+  "name": "package.json",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "@vk-io/hear": "^1.0.3",
+    "mysql2": "^2.2.5",
+    "require": "^2.4.20",
+    "vk-io": "^4.0.0-rc.30",
+    "vk-io-question": "^2.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "youj33n",
+  "license": "ISC"
+}
