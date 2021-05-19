@@ -1,6 +1,6 @@
 import { VK } from 'vk-io';
 import { connection, connects, MD5 } from './mysql.js' //конфиги mysql
-import { generalMenu, menu } from './keyboard.js' //Кнопки
+import { generalMenu, menu, menu2 } from './keyboard.js' //Кнопки
 
 //Подключение к API VK
 const vk = new VK()
@@ -26,7 +26,8 @@ const messageIs = [
     'статистика',
     'назад',
     'информация',
-    'проверка'
+    'проверка',
+    'выход с аккаунта'
 ]
 
 vk.updates.use(async (context, next) => { //прослушка сообщений
@@ -66,7 +67,7 @@ vk.updates.use(async (context, next) => { //прослушка сообщени�
                 //Аккаунт найден
                 player.name = results[0].NickName //NickName поле имени в таблице BD
                 if(results[0].NickName == player.name) {
-                    context.send({message: `✅Ты успешно авторизовался в аккаунте ${results[0].NickName}`, keyboard: menu})
+                    context.send({message: `✅Ты успешно авторизовался в аккаунте ${results[0].NickName}`, keyboard: menu2})
                     status_login = L_ACTIVE
                 }
             })
@@ -78,7 +79,12 @@ vk.updates.use(async (context, next) => { //прослушка сообщени�
         context.send({message: `👀Я тебя не понимаю..\nВоспользуйся меню`, keyboard: generalMenu});
 });
 
-
+vk.updates.hear(/выход с аккаунта$/i, async msg => {
+    status_login = L_NULL
+    player.name = " "
+    player.password = " "
+    msg.send({message: `Вы вышли с аккаунта`, keyboard: menu});
+})
 vk.updates.hear(/статистика$/i, async msg => {
     if(status_login != L_ACTIVE) 
         return msg.send({message: `Сначала нужно авторизоваться!`, keyboard: menu});
@@ -89,6 +95,7 @@ vk.updates.hear(/статистика$/i, async msg => {
         async (err, results, fields) => {
 
             const JOB_NAME = [
+                "Безработный",
                 "Водитель автобуса",
                 "Детектив",
                 "Развозчик продуктов",
@@ -150,14 +157,14 @@ vk.updates.hear(/статистика$/i, async msg => {
                 Опыт: ${results[0].Exp}/${(results[0].Level + 1) * 4}
                 Номер телефона: ${results[0].TelNum}
 
-                Работа: ${JOB_NAME[results[0].Job+1]}
+                Работа: ${JOB_NAME[results[0].Job]}
                 Наркотики: ${results[0].Drugs} гр.
                 Материалы: ${results[0].Mats} шт.
 
                 Организация: ${FRAC_NAME[results[0].Member]}
 
                 `
-                , keyboard: menu});
+                , keyboard: menu2});
                 
                 
                 
@@ -178,7 +185,7 @@ vk.updates.hear(/^назад$/i, async msg => {
 });
 vk.updates.hear(/^авторизация$/i, async msg => {
     if(status_login == L_ACTIVE) 
-        return msg.send({message: `Ты уже авторизован!`, keyboard: menu})
+        return msg.send({message: `Ты уже авторизован!`, keyboard: menu2})
 
     await msg.send({message: `${await getName(msg.senderId)}\nДля авторизации введите логин и пароль через запятую:`})
     status_login = L_PROCESS
