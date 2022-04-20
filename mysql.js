@@ -5,7 +5,7 @@ let connection = mysql.createConnection({
     host: "94.23.206.162",
     user: "gs59020",
     database: "gs59020",
-    password: "fateev"
+    password: "password"
   })
 let connects = (connection) => {
       connection.connect(function(err) {
